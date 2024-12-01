@@ -1,0 +1,9 @@
+MoneyManager.Application/bin/
+MoneyManager.Application/obj/
+MoneyManager.Application/*.dll
+MoneyManager.Application/*.pdb
+
+MoneyManager.Domain/bin/
+MoneyManager.Domain/obj/
+MoneyManager.Domain/*.dll
+MoneyManager.Domain/*.pdb

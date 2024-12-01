@@ -1,0 +1,16 @@
+﻿version: '3.8'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: money_manager_postgres
+    environment:
+      POSTGRES_USER: money_manager_web_user
+      POSTGRES_PASSWORD: 123456789
+      POSTGRES_DB: money_manager_web_db
+    ports:
+      - "5440:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

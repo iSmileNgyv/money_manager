@@ -1,0 +1,11 @@
+MoneyManager.Infrastructure/bin/
+MoneyManager.Infrastructure/obj/
+MoneyManager.Infrastructure/out/
+MoneyManager.Infrastructure/*.dll
+MoneyManager.Infrastructure/*.pdb
+
+MoneyManager.Persistence/bin/
+MoneyManager.Persistence/obj/
+MoneyManager.Persistence/out/
+MoneyManager.Persistence/*.dll
+MoneyManager.Persistence/*.pdb
