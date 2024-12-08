@@ -28,6 +28,9 @@ namespace MoneyManager.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -39,6 +42,9 @@ namespace MoneyManager.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
