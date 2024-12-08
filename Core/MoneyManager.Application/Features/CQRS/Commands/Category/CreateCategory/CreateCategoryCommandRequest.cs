@@ -7,4 +7,5 @@ public class CreateCategoryCommandRequest : IRequest<CreateCategoryCommandRespon
     public required string Name { get; set; }
     public required string Image { get; set; }
     public string? Description { get; set; }
+    public string? CategoryId { get; set; }
 }

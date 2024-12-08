@@ -17,12 +17,33 @@ public class CategoryService(
     {
         try
         {
-            Category category = new()
+            Category category;
+            if (request.CategoryId != null)
             {
-                Name = request.Name,
-                Image = request.Image,
-                Description = request.Description
-            };
+                var parentCategory = await readRepository.GetByIdAsync(Guid.Parse(request.CategoryId));
+                if (parentCategory == null)
+                {
+                    throw new UnknownErrorException();
+                }
+
+                category = new()
+                {
+                    Name = request.Name,
+                    Image = request.Image,
+                    Description = request.Description,
+                    CategoryId = Guid.Parse(request.CategoryId),
+                    Level = parentCategory.Level + 1
+                };
+            }
+            else
+            {
+                     category = new()
+                {
+                    Name = request.Name,
+                    Image = request.Image,
+                    Description = request.Description
+                };
+            }
             await writeRepository.AddAsync(category);
             await writeRepository.SaveAsync();
             return new();
