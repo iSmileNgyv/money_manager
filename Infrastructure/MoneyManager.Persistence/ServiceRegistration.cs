@@ -5,7 +5,7 @@ using MoneyManager.Application.Repositories.Category;
 using MoneyManager.Application.Services.Entities;
 using MoneyManager.Persistence.Contexts;
 using MoneyManager.Persistence.Repositories.Category;
-using MoneyManager.Persistence.Services.Entitites;
+using MoneyManager.Persistence.Services.Entities;
 
 namespace MoneyManager.Persistence;
 

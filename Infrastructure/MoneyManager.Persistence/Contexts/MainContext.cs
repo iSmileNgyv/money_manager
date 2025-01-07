@@ -7,7 +7,6 @@ namespace MoneyManager.Persistence.Contexts;
 
 public class MainContext(DbContextOptions options) : DbContext(options)
 {
-    public DbSet<ProductCategory> ProductCategories { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Category> Categories { get; set; }
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -28,7 +27,7 @@ public class MainContext(DbContextOptions options) : DbContext(options)
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<ProductCategory>()
+        modelBuilder.Entity<Category>()
             .HasMany(c => c.Products)
             .WithOne(p => p.Category)
             .HasForeignKey(p => p.CategoryId)

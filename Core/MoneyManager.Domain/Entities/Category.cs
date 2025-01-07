@@ -8,9 +8,11 @@ public class Category : BaseEntity
     [MaxLength(100)]
     public required string Name { get; set; }
     [MaxLength(1000)]
-    public required string Image { get; set; }
+    public string? Image { get; set; }
     [MaxLength(2000)]
     public string? Description { get; set; }
     public int Level { get; set; }
-    public Guid CategoryId { get; set; }
+    public CategoryType CategoryType { get; set; } = CategoryType.Minus;
+    public string? CategoryId { get; set; }
+    public ICollection<Product>? Products { get; set; }
 }

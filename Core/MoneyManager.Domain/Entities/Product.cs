@@ -12,5 +12,5 @@ public class Product : BaseEntity
      [MaxLength(2000)]
      public string? Description { get; set; }
      public required Guid CategoryId { get; set; }
-     public ProductCategory? Category { get; set; }
+     public Category? Category { get; set; }
 }

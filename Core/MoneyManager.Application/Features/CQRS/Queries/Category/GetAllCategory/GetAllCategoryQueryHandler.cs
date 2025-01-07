@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using MoneyManager.Application.Services.Entities;
 
-namespace MoneyManager.Application.Features.CQRS.Queries.Category;
+namespace MoneyManager.Application.Features.CQRS.Queries.Category.GetAllCategory;
 
 public class GetAllCategoryQueryHandler(
     ICategoryService service
