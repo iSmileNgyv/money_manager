@@ -28,10 +28,11 @@ namespace MoneyManager.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("CategoryId")
-                        .HasColumnType("text");
+                    b.Property<Guid?>("CategoryId")
+                        .HasMaxLength(100)
+                        .HasColumnType("uuid");
 
-                    b.Property<int?>("CategoryType")
+                    b.Property<int>("CategoryType")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedDate")
@@ -58,7 +59,40 @@ namespace MoneyManager.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("Image");
+
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("MoneyManager.Domain.Entities.Media", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Path");
+
+                    b.ToTable("Medias");
                 });
 
             modelBuilder.Entity("MoneyManager.Domain.Entities.Product", b =>
@@ -78,7 +112,6 @@ namespace MoneyManager.Persistence.Migrations
                         .HasColumnType("character varying(2000)");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
@@ -86,6 +119,9 @@ namespace MoneyManager.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("timestamp with time zone");
@@ -95,6 +131,24 @@ namespace MoneyManager.Persistence.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("MoneyManager.Domain.Entities.Category", b =>
+                {
+                    b.HasOne("MoneyManager.Domain.Entities.Category", "ParentCategory")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MoneyManager.Domain.Entities.Media", "Media")
+                        .WithMany("Categories")
+                        .HasForeignKey("Image")
+                        .HasPrincipalKey("Path")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Media");
+
+                    b.Navigation("ParentCategory");
                 });
 
             modelBuilder.Entity("MoneyManager.Domain.Entities.Product", b =>
@@ -111,6 +165,11 @@ namespace MoneyManager.Persistence.Migrations
             modelBuilder.Entity("MoneyManager.Domain.Entities.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("MoneyManager.Domain.Entities.Media", b =>
+                {
+                    b.Navigation("Categories");
                 });
 #pragma warning restore 612, 618
         }

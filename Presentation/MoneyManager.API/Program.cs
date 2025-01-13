@@ -5,6 +5,8 @@ using MoneyManager.Application;
 using MoneyManager.Application.Exceptions;
 using MoneyManager.Application.Validators;
 using MoneyManager.Application.Validators.Category;
+using MoneyManager.Infrastructure;
+using MoneyManager.Infrastructure.Services.Storage.Local;
 using MoneyManager.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddApplicationServices();
 builder.Services.AddPersistenceServices();
+builder.Services.AddInfrastructureServices();
+builder.Services.AddStorage<LocalStorage>();
 builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>()).AddFluentValidation(configuration => configuration.RegisterValidatorsFromAssemblyContaining<CreateCategoryCommandValidator>())
     .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true);
 builder.Services.AddCors(options => 

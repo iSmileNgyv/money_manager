@@ -18,7 +18,18 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Core\MoneyManager.Application\MoneyManager.Application.csproj" />
+      <ProjectReference Include="..\..\Infrastructure\MoneyManager.Infrastructure\MoneyManager.Infrastructure.csproj" />
       <ProjectReference Include="..\..\Infrastructure\MoneyManager.Persistence\MoneyManager.Persistence.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

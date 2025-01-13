@@ -8,7 +8,7 @@ public class GetAllCategoryWithoutPaginationQueryResponse
     public required string Name { get; set; }
     public string? Description { get; set; }
     public DateTime CreatedDate { get; set; }
-    public string? CategoryId { get; set; }
+    public Guid? CategoryId { get; set; }
     public CategoryType Type { get; set; }
     public int Level { get; set; }
 }

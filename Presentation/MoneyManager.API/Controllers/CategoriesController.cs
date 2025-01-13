@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using MoneyManager.Application.Features.CQRS.Commands.Category.CreateCategory;
 using MoneyManager.Application.Features.CQRS.Commands.Category.RemoveCategory;
 using MoneyManager.Application.Features.CQRS.Commands.Category.UpdateCategory;
-using MoneyManager.Application.Features.CQRS.Queries.Category;
 using MoneyManager.Application.Features.CQRS.Queries.Category.GetAllCategory;
 using MoneyManager.Application.Features.CQRS.Queries.Category.GetAllCategoryWithoutPagination;
 using MoneyManager.Application.Features.CQRS.Queries.Category.GetFilteredCategory;
