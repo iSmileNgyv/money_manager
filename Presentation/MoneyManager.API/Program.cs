@@ -12,6 +12,11 @@ using MoneyManager.Persistence;
 using MoneyManager.Persistence.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(8080); // IPv4 üzerinde 8080 portunda dinle
+    serverOptions.ListenAnyIP(8081); // IPv4 üzerinde 8081 portunda dinle
+});
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
