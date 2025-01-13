@@ -1,6 +1,7 @@
 using System.Text.Json;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using MoneyManager.Application;
 using MoneyManager.Application.Exceptions;
 using MoneyManager.Application.Validators;
@@ -8,6 +9,7 @@ using MoneyManager.Application.Validators.Category;
 using MoneyManager.Infrastructure;
 using MoneyManager.Infrastructure.Services.Storage.Local;
 using MoneyManager.Persistence;
+using MoneyManager.Persistence.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +61,11 @@ app.UseExceptionHandler(errorApp =>
         }
     });
 });
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<MainContext>();
+    dbContext.Database.Migrate();
+}
 /*using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<MainContext>();
