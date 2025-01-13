@@ -14,8 +14,8 @@ services:
   moneymanager.api:
     image: moneymanager.api
     ports:
-      - "8080:80"
-      - "8081:81"
+      - "8080:8080"
+      - "8081:8081"
     build:
       context: .
       dockerfile: Presentation/MoneyManager.API/Dockerfile
