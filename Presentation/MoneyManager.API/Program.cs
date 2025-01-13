@@ -14,12 +14,10 @@ using MoneyManager.Persistence.Contexts;
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    serverOptions.ListenAnyIP(8080); // IPv4 üzerinde 8080 portunda dinle
-    serverOptions.ListenAnyIP(8081); // IPv4 üzerinde 8081 portunda dinle
+    serverOptions.ListenAnyIP(8080);
+    serverOptions.ListenAnyIP(8081);
 });
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddApplicationServices();
@@ -31,7 +29,7 @@ builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>
 builder.Services.AddCors(options => 
     options.AddDefaultPolicy(
         policy => 
-            policy.WithOrigins("http://localhost:4200", "https://localhost:4200/")
+            policy.WithOrigins("http://money.iso.com.az", "https://money.iso.com.az")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
     ));
