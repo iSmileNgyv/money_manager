@@ -61,11 +61,6 @@ app.UseExceptionHandler(errorApp =>
         }
     });
 });
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<MainContext>();
-    dbContext.Database.Migrate();
-}
 /*using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<MainContext>();
