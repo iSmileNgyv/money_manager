@@ -13,6 +13,9 @@ services:
       - pgdata:/var/lib/postgresql/data
   moneymanager.api:
     image: moneymanager.api
+    ports:
+      - "8080:80"
+      - "8081:81"
     build:
       context: .
       dockerfile: Presentation/MoneyManager.API/Dockerfile
