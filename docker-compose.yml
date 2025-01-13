@@ -16,6 +16,8 @@ services:
     build:
       context: .
       dockerfile: Presentation/MoneyManager.API/Dockerfile
+    depends_on:
+      - postgres
 
 volumes:
   pgdata:
