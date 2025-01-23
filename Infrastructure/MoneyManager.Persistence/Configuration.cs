@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace CashierWeb.Persistence;
+namespace MoneyManager.Persistence;
 
 public static class Configuration
 {

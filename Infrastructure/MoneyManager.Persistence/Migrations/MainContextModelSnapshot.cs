@@ -22,6 +22,41 @@ namespace MoneyManager.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("MoneyManager.Domain.Entities.Cashback", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("PaymentMethodId")
+                        .HasColumnType("uuid");
+
+                    b.Property<float>("Percentage")
+                        .HasColumnType("real");
+
+                    b.Property<Guid?>("StockId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("PaymentMethodId");
+
+                    b.HasIndex("StockId");
+
+                    b.ToTable("Cashbacks");
+                });
+
             modelBuilder.Entity("MoneyManager.Domain.Entities.Category", b =>
                 {
                     b.Property<Guid>("Id")
@@ -95,6 +130,34 @@ namespace MoneyManager.Persistence.Migrations
                     b.ToTable("Medias");
                 });
 
+            modelBuilder.Entity("MoneyManager.Domain.Entities.PaymentMethod", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Image")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Image");
+
+                    b.ToTable("PaymentMethods");
+                });
+
             modelBuilder.Entity("MoneyManager.Domain.Entities.Product", b =>
                 {
                     b.Property<Guid>("Id")
@@ -130,7 +193,60 @@ namespace MoneyManager.Persistence.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("Image");
+
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("MoneyManager.Domain.Entities.Stock", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Image")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Stocks");
+                });
+
+            modelBuilder.Entity("MoneyManager.Domain.Entities.Cashback", b =>
+                {
+                    b.HasOne("MoneyManager.Domain.Entities.Category", "Category")
+                        .WithMany("Cashbacks")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MoneyManager.Domain.Entities.PaymentMethod", "PaymentMethod")
+                        .WithMany("Cashbacks")
+                        .HasForeignKey("PaymentMethodId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MoneyManager.Domain.Entities.Stock", "Stock")
+                        .WithMany("Cashbacks")
+                        .HasForeignKey("StockId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Category");
+
+                    b.Navigation("PaymentMethod");
+
+                    b.Navigation("Stock");
                 });
 
             modelBuilder.Entity("MoneyManager.Domain.Entities.Category", b =>
@@ -151,6 +267,17 @@ namespace MoneyManager.Persistence.Migrations
                     b.Navigation("ParentCategory");
                 });
 
+            modelBuilder.Entity("MoneyManager.Domain.Entities.PaymentMethod", b =>
+                {
+                    b.HasOne("MoneyManager.Domain.Entities.Media", "Media")
+                        .WithMany("PaymentMethods")
+                        .HasForeignKey("Image")
+                        .HasPrincipalKey("Path")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Media");
+                });
+
             modelBuilder.Entity("MoneyManager.Domain.Entities.Product", b =>
                 {
                     b.HasOne("MoneyManager.Domain.Entities.Category", "Category")
@@ -159,17 +286,41 @@ namespace MoneyManager.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("MoneyManager.Domain.Entities.Media", "Media")
+                        .WithMany("Products")
+                        .HasForeignKey("Image")
+                        .HasPrincipalKey("Path")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("Category");
+
+                    b.Navigation("Media");
                 });
 
             modelBuilder.Entity("MoneyManager.Domain.Entities.Category", b =>
                 {
+                    b.Navigation("Cashbacks");
+
                     b.Navigation("Products");
                 });
 
             modelBuilder.Entity("MoneyManager.Domain.Entities.Media", b =>
                 {
                     b.Navigation("Categories");
+
+                    b.Navigation("PaymentMethods");
+
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("MoneyManager.Domain.Entities.PaymentMethod", b =>
+                {
+                    b.Navigation("Cashbacks");
+                });
+
+            modelBuilder.Entity("MoneyManager.Domain.Entities.Stock", b =>
+                {
+                    b.Navigation("Cashbacks");
                 });
 #pragma warning restore 612, 618
         }

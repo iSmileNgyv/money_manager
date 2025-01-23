@@ -10,6 +10,9 @@ public class MainContext(DbContextOptions options) : DbContext(options)
     public DbSet<Product> Products { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Media> Medias { get; set; }
+    public DbSet<PaymentMethod> PaymentMethods { get; set; }
+    public DbSet<Stock> Stocks { get; set; }
+    public DbSet<Cashback> Cashbacks { get; set; }
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         IEnumerable<EntityEntry<BaseEntity>> datas = ChangeTracker.Entries<BaseEntity>();
@@ -40,6 +43,20 @@ public class MainContext(DbContextOptions options) : DbContext(options)
             .HasForeignKey(c => c.Image)
             .HasPrincipalKey(m => m.Path) 
             .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Media>()
+            .HasMany(m => m.Products)
+            .WithOne(p => p.Media)
+            .HasForeignKey(m => m.Image)
+            .HasPrincipalKey(m => m.Path)
+            .OnDelete(DeleteBehavior.Restrict);
+        
+        modelBuilder.Entity<Media>()
+            .HasMany(m => m.PaymentMethods)
+            .WithOne(p => p.Media)
+            .HasForeignKey(m => m.Image)
+            .HasPrincipalKey(m => m.Path)
+            .OnDelete(DeleteBehavior.Restrict);
         
         modelBuilder.Entity<Category>()
             .Property(c => c.CategoryId)
@@ -50,5 +67,32 @@ public class MainContext(DbContextOptions options) : DbContext(options)
             .WithMany()                  
             .HasForeignKey(c => c.CategoryId) 
             .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Category>()
+            .HasMany(c => c.Cashbacks)
+            .WithOne(c => c.Category)
+            .HasForeignKey(c => c.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<PaymentMethod>()
+            .HasMany(p => p.Cashbacks)
+            .WithOne(c => c.PaymentMethod)
+            .HasForeignKey(c => c.PaymentMethodId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Stock>()
+            .HasMany(s => s.Cashbacks)
+            .WithOne(c => c.Stock)
+            .HasForeignKey(c => c.StockId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Cashback>()
+            .Property(c => c.CategoryId)
+            .IsRequired(false);
+
+        modelBuilder.Entity<Cashback>()
+            .Property(c => c.StockId)
+            .IsRequired(false);
+
     }
 }

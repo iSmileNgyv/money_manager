@@ -1,0 +1,3 @@
+namespace MoneyManager.Application.Features.CQRS.Commands.PaymentMethod.CreatePaymentMethod;
+
+public class CreatePaymentMethodCommandResponse;

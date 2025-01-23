@@ -1,7 +1,6 @@
 using System.Text.Json;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.EntityFrameworkCore;
 using MoneyManager.Application;
 using MoneyManager.Application.Exceptions;
 using MoneyManager.Application.Validators;
@@ -9,14 +8,14 @@ using MoneyManager.Application.Validators.Category;
 using MoneyManager.Infrastructure;
 using MoneyManager.Infrastructure.Services.Storage.Local;
 using MoneyManager.Persistence;
-using MoneyManager.Persistence.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.ConfigureKestrel(serverOptions =>
-{
-    serverOptions.ListenAnyIP(8080);
-    serverOptions.ListenAnyIP(8081);
-});
+
+// builder.WebHost.ConfigureKestrel(serverOptions =>
+// {
+//     serverOptions.ListenAnyIP(8080);
+//     serverOptions.ListenAnyIP(8081);
+// });
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -29,7 +28,7 @@ builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>
 builder.Services.AddCors(options => 
     options.AddDefaultPolicy(
         policy => 
-            policy.WithOrigins("http://money.iso.com.az", "https://money.iso.com.az")
+            policy.WithOrigins("http://localhost:4200", "https://localhost:4200")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
     ));
@@ -64,24 +63,26 @@ app.UseExceptionHandler(errorApp =>
         }
     });
 });
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<MainContext>();
-    try
-    {
-        dbContext.Database.Migrate();
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Migration sırasında bir hata oluştu: {ex.Message}");
-    }
-}
+// using (var scope = app.Services.CreateScope())
+// {
+//     var dbContext = scope.ServiceProvider.GetRequiredService<MainContext>();
+//     try
+//     {
+//         dbContext.Database.Migrate();
+//     }
+//     catch (Exception ex)
+//     {
+//         Console.WriteLine($"Migration sırasında bir hata oluştu: {ex.Message}");
+//     }
+// }
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
 app.UseCors();
 app.UseRouting();
 app.UseHttpsRedirection();

@@ -10,4 +10,6 @@ public class Media : BaseEntity
     [MaxLength(500)]
     public required string FileName { get; set; }
     public ICollection<Category>? Categories { get; set; }
+    public ICollection<PaymentMethod>? PaymentMethods { get; set; }
+    public ICollection<Product>? Products { get; set; }
 }
