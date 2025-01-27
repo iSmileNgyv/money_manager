@@ -135,6 +135,7 @@ public class CategoryService(
             Name = c.Name,
             Description = c.Description,
             CategoryId = c.CategoryId,
+            Image = new ImageResponse {Path = c.Image, FullPath = configuration["BaseStorageUrl"] + "/" +c.Image },
             Level = c.Level,
             CategoryType = c.CategoryType,
             CreatedDate = c.CreatedDate

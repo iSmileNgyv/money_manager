@@ -2,6 +2,7 @@ using MoneyManager.Application.Features.CQRS.Commands.PaymentMethod.CreatePaymen
 using MoneyManager.Application.Features.CQRS.Commands.PaymentMethod.RemovePaymentMethod;
 using MoneyManager.Application.Features.CQRS.Commands.PaymentMethod.UpdatePaymentMethod;
 using MoneyManager.Application.Features.CQRS.Queries.PaymentMethod.GetAllPaymentMethod;
+using MoneyManager.Application.Features.CQRS.Queries.PaymentMethod.GetAllPaymentMethodWithoutPagination;
 using MoneyManager.Application.Features.CQRS.Queries.PaymentMethod.GetFilteredPaymentMethod;
 
 namespace MoneyManager.Application.Services.Entities;
@@ -13,4 +14,5 @@ public interface IPaymentMethodService
     Task<RemovePaymentMethodCommandResponse> RemovePaymentMethodAsync(RemovePaymentMethodCommandRequest request, CancellationToken ct = default);
     Task<List<GetAllPaymentMethodQueryResponse>> GetAllPaymentMethodsAsync(GetAllPaymentMethodQueryRequest request, CancellationToken ct = default);
     Task<List<GetFilteredPaymentMethodQueryResponse>> GetFilteredPaymentMethodsAsync(GetFilteredPaymentMethodQueryRequest request, CancellationToken ct = default);
+    Task<List<GetAllPaymentMethodWithoutPaginationQueryResponse>> GetAllPaymentMethodsWithoutPaginationAsync(GetAllPaymentMethodWithoutPaginationQueryRequest request, CancellationToken ct = default);
 }

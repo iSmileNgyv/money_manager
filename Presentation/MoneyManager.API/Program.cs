@@ -1,6 +1,9 @@
+using System.Text;
 using System.Text.Json;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.IdentityModel.Tokens;
 using MoneyManager.Application;
 using MoneyManager.Application.Exceptions;
 using MoneyManager.Application.Validators;
@@ -32,6 +35,21 @@ builder.Services.AddCors(options =>
                 .AllowAnyMethod()
                 .AllowAnyHeader()
     ));
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer("Admin", options =>
+    {
+        options.TokenValidationParameters = new()
+        {
+            ValidateAudience = true, // olusturulacak token degerinin hangi sitelerin kullanabilecegini belirtir
+            ValidateIssuer = true, // kim bu tokeni olusturdu
+            ValidateLifetime = true, // olusturulan tokenin ne kadar sure gecerli oldugunu belirtir
+            ValidateIssuerSigningKey = true, // olusturulan tokene hangi security key ile sifrelenecegini belirtir
+            ValidAudience = builder.Configuration["Token:Audience"],
+            ValidIssuer = builder.Configuration["Token:Issuer"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token:SecurityKey"] ?? "SecurityKey@12345")),
+            LifetimeValidator = (notBefore, expires, securityToken, validationParameters) => expires != null && expires > DateTime.UtcNow
+        };
+    });
 var app = builder.Build();
 app.UseExceptionHandler(errorApp =>
 {
@@ -86,8 +104,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors();
 app.UseRouting();
 app.UseHttpsRedirection();
-//app.UseAuthentication();
-//app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseStaticFiles();
 app.UseEndpoints(endpoints => { endpoints.MapControllers();});
 app.Run();

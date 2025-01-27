@@ -16,4 +16,5 @@ public class Product : BaseEntity
      public Guid CategoryId { get; set; }
      public Category Category { get; set; }
      public Media? Media { get; set; }
+     public ICollection<TransactionProduct>? TransactionProducts { get; set; }
 }

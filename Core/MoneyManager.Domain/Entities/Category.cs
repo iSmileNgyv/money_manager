@@ -19,4 +19,5 @@ public class Category : BaseEntity
     public Category? ParentCategory { get; set; }
     public ICollection<Product>? Products { get; set; }
     public ICollection<Cashback>? Cashbacks { get; set; }
+    public ICollection<Transaction>? Transactions { get; set; }
 }

@@ -6,7 +6,12 @@ using MoneyManager.Application.Repositories.Media;
 using MoneyManager.Application.Repositories.PaymentMethod;
 using MoneyManager.Application.Repositories.Product;
 using MoneyManager.Application.Repositories.Stock;
+using MoneyManager.Application.Repositories.Transaction;
+using MoneyManager.Application.Repositories.TransactionProduct;
+using MoneyManager.Application.Services.Auth;
+using MoneyManager.Application.Services.Auth.Types;
 using MoneyManager.Application.Services.Entities;
+using MoneyManager.Domain.Entities.Identity;
 using MoneyManager.Persistence.Contexts;
 using MoneyManager.Persistence.Repositories.Cashback;
 using MoneyManager.Persistence.Repositories.Category;
@@ -14,6 +19,9 @@ using MoneyManager.Persistence.Repositories.Media;
 using MoneyManager.Persistence.Repositories.PaymentMethod;
 using MoneyManager.Persistence.Repositories.Product;
 using MoneyManager.Persistence.Repositories.Stock;
+using MoneyManager.Persistence.Repositories.Transaction;
+using MoneyManager.Persistence.Repositories.TransactionProduct;
+using MoneyManager.Persistence.Services.Auth;
 using MoneyManager.Persistence.Services.Entities;
 
 namespace MoneyManager.Persistence;
@@ -25,6 +33,14 @@ public static class ServiceRegistration
         services.AddDbContext<MainContext>(options => 
                 options.UseNpgsql(Configuration.ConnectionString)
             );
+        services.AddIdentity<User, Role>(options =>
+        {
+            options.Password.RequiredLength = 6;
+            options.Password.RequireDigit = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireNonAlphanumeric = false;
+        }).AddEntityFrameworkStores<MainContext>();
 
         services.AddScoped<ICategoryReadRepository, CategoryReadRepository>();
         services.AddScoped<ICategoryWriteRepository, CategoryWriteRepository>();
@@ -38,6 +54,10 @@ public static class ServiceRegistration
         services.AddScoped<IStockWriteRepository, StockWriteRepository>();
         services.AddScoped<ICashbackReadRepository, CashbackReadRepository>();
         services.AddScoped<ICashbackWriteRepository, CashbackWriteRepository>();
+        services.AddScoped<ITransactionReadRepository, TransactionReadRepository>();
+        services.AddScoped<ITransactionWriteRepository, TransactionWriteRepository>();
+        services.AddScoped<ITransactionProductReadRepository, TransactionProductReadRepository>();
+        services.AddScoped<ITransactionProductWriteRepository, TransactionProductWriteRepository>();
 
 
         services.AddScoped<ICategoryService, CategoryService>();
@@ -46,5 +66,9 @@ public static class ServiceRegistration
         services.AddScoped<IPaymentMethodService, PaymentMethodService>();
         services.AddScoped<IStockService, StockService>();
         services.AddScoped<ICashbackService, CashbackService>();
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IInternalAuth, AuthService>();
+        services.AddScoped<ITransactionService, TransactionService>();
     }
 }

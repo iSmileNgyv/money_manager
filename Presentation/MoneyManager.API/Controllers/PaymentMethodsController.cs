@@ -1,14 +1,17 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoneyManager.Application.Features.CQRS.Commands.PaymentMethod.CreatePaymentMethod;
 using MoneyManager.Application.Features.CQRS.Commands.PaymentMethod.RemovePaymentMethod;
 using MoneyManager.Application.Features.CQRS.Commands.PaymentMethod.UpdatePaymentMethod;
 using MoneyManager.Application.Features.CQRS.Queries.PaymentMethod.GetAllPaymentMethod;
+using MoneyManager.Application.Features.CQRS.Queries.PaymentMethod.GetAllPaymentMethodWithoutPagination;
 using MoneyManager.Application.Features.CQRS.Queries.PaymentMethod.GetFilteredPaymentMethod;
 
 namespace MoneyManager.API.Controllers;
 [ApiController]
 [Route("api/v1/[controller]")]
+[Authorize(AuthenticationSchemes = "Admin")]
 public class PaymentMethodsController(IMediator mediator) : Controller
 {
     [HttpPost]
@@ -37,6 +40,12 @@ public class PaymentMethodsController(IMediator mediator) : Controller
 
     [HttpGet("filter")]
     public async Task<IActionResult> GetFilter([FromQuery] GetFilteredPaymentMethodQueryRequest request)
+    {
+        return Ok(await mediator.Send(request));
+    }
+
+    [HttpGet("all")]
+    public async Task<IActionResult> GetAll([FromQuery] GetAllPaymentMethodWithoutPaginationQueryRequest request)
     {
         return Ok(await mediator.Send(request));
     }

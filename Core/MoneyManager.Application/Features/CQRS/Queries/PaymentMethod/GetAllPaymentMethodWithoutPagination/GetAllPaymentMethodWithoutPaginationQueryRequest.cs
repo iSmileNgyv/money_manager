@@ -1,0 +1,5 @@
+using MediatR;
+
+namespace MoneyManager.Application.Features.CQRS.Queries.PaymentMethod.GetAllPaymentMethodWithoutPagination;
+
+public class GetAllPaymentMethodWithoutPaginationQueryRequest: IRequest<List<GetAllPaymentMethodWithoutPaginationQueryResponse>>;

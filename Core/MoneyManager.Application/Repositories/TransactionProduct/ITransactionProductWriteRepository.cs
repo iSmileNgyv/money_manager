@@ -1,0 +1,3 @@
+namespace MoneyManager.Application.Repositories.TransactionProduct;
+
+public interface ITransactionProductWriteRepository: IWriteRepository<Domain.Entities.TransactionProduct>;

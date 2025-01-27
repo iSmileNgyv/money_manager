@@ -1,0 +1,3 @@
+namespace MoneyManager.Application.Repositories.TransactionProduct;
+
+public interface ITransactionProductReadRepository: IReadRepository<Domain.Entities.TransactionProduct>;

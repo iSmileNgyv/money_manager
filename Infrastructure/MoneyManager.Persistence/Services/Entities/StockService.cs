@@ -7,6 +7,7 @@ using MoneyManager.Application.Features.CQRS.Commands.Stock.RemoveStock;
 using MoneyManager.Application.Features.CQRS.Commands.Stock.UpdateStock;
 using MoneyManager.Application.Features.CQRS.Queries.Common;
 using MoneyManager.Application.Features.CQRS.Queries.Stock.GetAllStock;
+using MoneyManager.Application.Features.CQRS.Queries.Stock.GetAllStockWithoutPagination;
 using MoneyManager.Application.Features.CQRS.Queries.Stock.GetFilteredStock;
 using MoneyManager.Application.Repositories.Stock;
 using MoneyManager.Application.Services.Entities;
@@ -103,5 +104,16 @@ public class StockService(
             Image = new ImageResponse {Path = s.Image, FullPath = configuration["BaseStorageUrl"] + "/" +s.Image },
             CreatedDate = s.CreatedDate
         }).ToList();
+    }
+
+    public async Task<List<GetAllStockWithoutPaginationQueryResponse>> GetAllStocksWithoutPaginationAsync(GetAllStockWithoutPaginationQueryRequest request,
+        CancellationToken ct = default)
+    {
+        var stocks = readRepository.GetAll(false);
+        return await stocks.Select(s => new GetAllStockWithoutPaginationQueryResponse
+        {
+            Id = s.Id,
+            Name = s.Name
+        }).ToListAsync(ct);
     }
 }

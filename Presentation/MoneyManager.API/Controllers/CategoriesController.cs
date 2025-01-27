@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoneyManager.Application.Features.CQRS.Commands.Category.CreateCategory;
 using MoneyManager.Application.Features.CQRS.Commands.Category.RemoveCategory;
@@ -10,6 +11,7 @@ using MoneyManager.Application.Features.CQRS.Queries.Category.GetFilteredCategor
 namespace MoneyManager.API.Controllers;
 [Route("api/v1/[controller]")]
 [ApiController]
+[Authorize(AuthenticationSchemes = "Admin")]
 public class CategoriesController(
     IMediator mediator
     ) : Controller

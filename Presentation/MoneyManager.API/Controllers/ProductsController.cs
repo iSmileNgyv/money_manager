@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoneyManager.Application.Features.CQRS.Commands.Product.CreateProduct;
 using MoneyManager.Application.Features.CQRS.Commands.Product.RemoveProduct;
@@ -8,6 +9,7 @@ using MoneyManager.Application.Features.CQRS.Queries.Product.GetAllProduct;
 namespace MoneyManager.API.Controllers;
 [ApiController]
 [Route("api/v1/[controller]")]
+[Authorize(AuthenticationSchemes = "Admin")]
 public class ProductsController(
     IMediator mediator
     ) : Controller

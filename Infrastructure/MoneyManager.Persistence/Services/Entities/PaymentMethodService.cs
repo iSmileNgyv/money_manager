@@ -7,6 +7,7 @@ using MoneyManager.Application.Features.CQRS.Commands.PaymentMethod.RemovePaymen
 using MoneyManager.Application.Features.CQRS.Commands.PaymentMethod.UpdatePaymentMethod;
 using MoneyManager.Application.Features.CQRS.Queries.Common;
 using MoneyManager.Application.Features.CQRS.Queries.PaymentMethod.GetAllPaymentMethod;
+using MoneyManager.Application.Features.CQRS.Queries.PaymentMethod.GetAllPaymentMethodWithoutPagination;
 using MoneyManager.Application.Features.CQRS.Queries.PaymentMethod.GetFilteredPaymentMethod;
 using MoneyManager.Application.Repositories.PaymentMethod;
 using MoneyManager.Application.Services.Entities;
@@ -102,5 +103,16 @@ public class PaymentMethodService(
             Image = new ImageResponse {Path = p.Image, FullPath = p.Image },
             CreatedDate = p.CreatedDate
         }).ToList();
+    }
+
+    public async Task<List<GetAllPaymentMethodWithoutPaginationQueryResponse>> GetAllPaymentMethodsWithoutPaginationAsync(GetAllPaymentMethodWithoutPaginationQueryRequest request,
+        CancellationToken ct = default)
+    {
+        IQueryable<PaymentMethod> paymentMethods = readRepository.GetAll(false);
+        return await paymentMethods.Select(p => new GetAllPaymentMethodWithoutPaginationQueryResponse
+        {
+            Id = p.Id,
+            Name = p.Name
+        }).ToListAsync(ct);
     }
 }

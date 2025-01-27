@@ -11,4 +11,5 @@ public class Stock: BaseEntity
     [MaxLength(1000)]
     public string? Image { get; set; }
     public ICollection<Cashback>? Cashbacks { get; set; }
+    public ICollection<Transaction>? Transactions { get; set; }
 }

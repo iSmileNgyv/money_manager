@@ -12,4 +12,5 @@ public class PaymentMethod: BaseEntity
     public string? Image { get; set; }
     public ICollection<Cashback>? Cashbacks { get; set; }
     public Media? Media { get; set; }
+    public ICollection<Transaction>? Transactions { get; set; }
 }

@@ -65,7 +65,7 @@ public class CashbackService(
     {
         try
         {
-            var cashback = await readRepository.GetByIdAsync(request.Id);
+            Cashback? cashback = await readRepository.GetByIdAsync(request.Id);
             if (cashback == null)
                 throw new CashbackNotFoundException();
             writeRepository.Remove(cashback);
