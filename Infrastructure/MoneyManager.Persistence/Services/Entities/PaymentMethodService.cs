@@ -66,7 +66,7 @@ public class PaymentMethodService(
     {
         try
         {
-            PaymentMethod? paymentMethod = await readRepository.GetByIdAsync(request.Id);
+            PaymentMethod? paymentMethod = await readRepository.GetByIdAsync(request.Id, false);
             if (paymentMethod == null)
                 throw new PaymentMethodNotFoundException();
             writeRepository.Remove(paymentMethod);

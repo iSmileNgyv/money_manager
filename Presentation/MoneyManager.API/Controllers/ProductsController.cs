@@ -5,6 +5,7 @@ using MoneyManager.Application.Features.CQRS.Commands.Product.CreateProduct;
 using MoneyManager.Application.Features.CQRS.Commands.Product.RemoveProduct;
 using MoneyManager.Application.Features.CQRS.Commands.Product.UpdateProduct;
 using MoneyManager.Application.Features.CQRS.Queries.Product.GetAllProduct;
+using MoneyManager.Application.Features.CQRS.Queries.Product.GetFilteredProduct;
 
 namespace MoneyManager.API.Controllers;
 [ApiController]
@@ -38,7 +39,7 @@ public class ProductsController(
     }
 
     [HttpGet("filter")]
-    public async Task<IActionResult> GetFilter([FromQuery] GetAllProductQueryRequest request)
+    public async Task<IActionResult> GetFilter([FromQuery] GetFilteredProductQueryRequest request)
     {
         return Ok(await mediator.Send(request));
     }

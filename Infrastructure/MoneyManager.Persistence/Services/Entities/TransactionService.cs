@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MoneyManager.Application.Exceptions;
 using MoneyManager.Application.Exceptions.Transaction;
 using MoneyManager.Application.Features.CQRS.Commands.Transaction.CreateTransaction;
 using MoneyManager.Application.Features.CQRS.Commands.Transaction.RemoveTransaction;
 using MoneyManager.Application.Features.CQRS.Commands.Transaction.UpdateTransaction;
+using MoneyManager.Application.Features.CQRS.Queries.Common;
 using MoneyManager.Application.Features.CQRS.Queries.Transaction.GetAllTransaction;
 using MoneyManager.Application.Repositories.Transaction;
 using MoneyManager.Application.Services.Entities;
@@ -13,7 +15,8 @@ namespace MoneyManager.Persistence.Services.Entities;
 
 public class TransactionService(
     ITransactionWriteRepository writeRepository,
-    ITransactionReadRepository readRepository
+    ITransactionReadRepository readRepository,
+    IConfiguration configuration
     ): ITransactionService
 {
     public async Task<CreateTransactionCommandResponse> CreateTransactionAsync(CreateTransactionCommandRequest request, CancellationToken ct = default)
@@ -46,6 +49,7 @@ public class TransactionService(
         {
             Transaction transaction = new()
             {
+                Id = request.Id,
                 PaymentMethodId = request.PaymentMethodId,
                 CategoryId = request.CategoryId,
                 StockId = request.StockId,
@@ -67,7 +71,7 @@ public class TransactionService(
     {
         try
         {
-            var transaction = await readRepository.GetByIdAsync(request.Id);
+            var transaction = await readRepository.GetByIdAsync(request.Id, false);
             if (transaction == null)
                 throw new TransactionNotFoundException();
             writeRepository.Remove(transaction);
@@ -86,6 +90,7 @@ public class TransactionService(
             .Include(t => t.PaymentMethod)
             .Include(t => t.Category)
             .Include(t => t.Stock)
+            .OrderByDescending(t => t.CreatedDate)
             .Take(request.Size)
             .Skip(request.Page * request.Size);
 
@@ -94,12 +99,16 @@ public class TransactionService(
             Id = t.Id,
             PaymentMethodId = t.PaymentMethodId,
             PaymentMethodName = t.PaymentMethod.Name,
+            PaymentMethodImage = new ImageResponse {Path = t.PaymentMethod.Image, FullPath = configuration["BaseStorageUrl"] + "/" + t.PaymentMethod.Image },
             CategoryId = t.CategoryId,
             CategoryName = t.Category.Name,
+            CategoryImage = new ImageResponse {Path = t.Category.Image, FullPath = configuration["BaseStorageUrl"] + "/" +t.Category.Image },
             StockId = t.StockId,
             StockName = t.Stock!.Name,
+            StockImage = new ImageResponse {Path = t.Stock.Image, FullPath = configuration["BaseStorageUrl"] + "/" +t.Stock.Image },
             Amount = t.Amount,
-            CashbackAmount = t.CashbackAmount
+            CashbackAmount = t.CashbackAmount,
+            CreatedDate = t.CreatedDate
         }).ToListAsync(ct);
     }
 }

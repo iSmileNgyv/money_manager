@@ -11,8 +11,15 @@ using MoneyManager.Application.Validators.Category;
 using MoneyManager.Infrastructure;
 using MoneyManager.Infrastructure.Services.Storage.Local;
 using MoneyManager.Persistence;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.WithThreadId()
+    .Enrich.FromLogContext()
+    .CreateLogger();
+builder.Host.UseSerilog();
 
 // builder.WebHost.ConfigureKestrel(serverOptions =>
 // {
@@ -103,7 +110,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors();
 app.UseRouting();
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseStaticFiles();

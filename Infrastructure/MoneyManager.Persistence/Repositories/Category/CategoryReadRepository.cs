@@ -7,9 +7,11 @@ namespace MoneyManager.Persistence.Repositories.Category;
 
 public class CategoryReadRepository(MainContext context) : ReadRepository<Domain.Entities.Category>(context), ICategoryReadRepository
 {
+    private readonly MainContext _context = context;
+
     public async Task<List<Domain.Entities.Category>> FilterAsync(GetFilteredCategoryQueryRequest request)
     {
-        IQueryable<Domain.Entities.Category> query = context.Categories;
+        IQueryable<Domain.Entities.Category> query = _context.Categories.AsNoTracking();
         if (!string.IsNullOrEmpty(request.Name))
         {
             query = query.Where(c => c.Name.Trim().ToLower().Contains(request.Name.Trim().ToLower()));

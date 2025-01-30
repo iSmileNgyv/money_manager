@@ -66,7 +66,7 @@ public class StockService(
     {
         try
         {
-            Stock? stock = await readRepository.GetByIdAsync(request.Id);
+            Stock? stock = await readRepository.GetByIdAsync(request.Id, false);
             if (stock == null)
                 throw new StockNotFoundException();
             writeRepository.Remove(stock);

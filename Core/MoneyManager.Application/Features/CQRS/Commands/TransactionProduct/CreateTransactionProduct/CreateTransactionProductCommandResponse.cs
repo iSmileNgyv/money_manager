@@ -1,0 +1,3 @@
+namespace MoneyManager.Application.Features.CQRS.Commands.TransactionProduct.CreateTransactionProduct;
+
+public class CreateTransactionProductCommandResponse;

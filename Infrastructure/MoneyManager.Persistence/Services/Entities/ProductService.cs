@@ -59,7 +59,7 @@ public class ProductService(
 
     public async Task<RemoveProductCommandResponse> RemoveProductAsync(RemoveProductCommandRequest request, CancellationToken ct = default)
     {
-        Product? product = await readRepository.GetByIdAsync(request.Id);
+        Product? product = await readRepository.GetByIdAsync(request.Id, false);
         if(product == null)
             throw new ProductNotFoundException();
         writeRepository.Remove(product);
@@ -75,9 +75,10 @@ public class ProductService(
             Id = p.Id,
             Name = p.Name,
             CategoryId = p.CategoryId,
-            Image = p.Image,
+            Image = new ImageResponse {Path = p.Image, FullPath = configuration["BaseStorageUrl"] + "/" +p.Image },
             Price = p.Price,
-            Description = p.Description
+            Description = p.Description,
+            CreatedDate = p.CreatedDate
         }).ToList();
     }
 

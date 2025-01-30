@@ -11,7 +11,7 @@ public class PaymentMethodReadRepository(MainContext context) : ReadRepository<D
 
     public async Task<List<Domain.Entities.PaymentMethod>> FilterAsync(GetFilteredPaymentMethodQueryRequest request)
     {
-        IQueryable<Domain.Entities.PaymentMethod> query = _context.PaymentMethods;
+        IQueryable<Domain.Entities.PaymentMethod> query = _context.PaymentMethods.AsNoTracking();
         if (!string.IsNullOrEmpty(request.Name))
         {
             query = query.Where(p => p.Name.Trim().ToLower().Contains(request.Name.Trim().ToLower()));

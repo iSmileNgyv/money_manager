@@ -5,6 +5,7 @@ using MoneyManager.Application.Features.CQRS.Commands.Cashback.CreateCashback;
 using MoneyManager.Application.Features.CQRS.Commands.Cashback.RemoveCashback;
 using MoneyManager.Application.Features.CQRS.Commands.Cashback.UpdateCashback;
 using MoneyManager.Application.Features.CQRS.Queries.Cashback.GetAllCashback;
+using MoneyManager.Application.Features.CQRS.Queries.Cashback.GetFilteredCashback;
 
 namespace MoneyManager.API.Controllers;
 [ApiController]
@@ -32,6 +33,12 @@ public class CashbacksController(IMediator mediator) : Controller
 
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] GetAllCashbackQueryRequest request)
+    {
+        return Ok(await mediator.Send(request));
+    }
+
+    [HttpGet("filter")]
+    public async Task<IActionResult> GetFilter([FromQuery] GetFilteredCashbackQueryRequest request)
     {
         return Ok(await mediator.Send(request));
     }

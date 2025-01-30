@@ -11,8 +11,10 @@ using MoneyManager.Application.Repositories.TransactionProduct;
 using MoneyManager.Application.Services.Auth;
 using MoneyManager.Application.Services.Auth.Types;
 using MoneyManager.Application.Services.Entities;
+using MoneyManager.Application.Services.Log;
 using MoneyManager.Domain.Entities.Identity;
 using MoneyManager.Persistence.Contexts;
+using MoneyManager.Persistence.Interceptors;
 using MoneyManager.Persistence.Repositories.Cashback;
 using MoneyManager.Persistence.Repositories.Category;
 using MoneyManager.Persistence.Repositories.Media;
@@ -30,9 +32,12 @@ public static class ServiceRegistration
 {
     public static void AddPersistenceServices(this IServiceCollection services)
     {
-        services.AddDbContext<MainContext>(options => 
-                options.UseNpgsql(Configuration.ConnectionString)
-            );
+        services.AddDbContext<MainContext>((serviceProvider, options) =>
+        {
+            var logService = serviceProvider.GetRequiredService<ILogService>();
+            options.UseNpgsql(Configuration.ConnectionString)
+                .AddInterceptors(new EfCoreLogInterceptor(logService));
+        });
         services.AddIdentity<User, Role>(options =>
         {
             options.Password.RequiredLength = 6;

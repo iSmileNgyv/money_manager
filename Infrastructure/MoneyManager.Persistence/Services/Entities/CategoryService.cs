@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MoneyManager.Application.Exceptions;
+using MoneyManager.Application.Exceptions.Cashback;
 using MoneyManager.Application.Exceptions.Category;
 using MoneyManager.Application.Features.CQRS.Commands.Category.CreateCategory;
 using MoneyManager.Application.Features.CQRS.Commands.Category.RemoveCategory;
@@ -11,15 +12,16 @@ using MoneyManager.Application.Features.CQRS.Queries.Category.GetFilteredCategor
 using MoneyManager.Application.Features.CQRS.Queries.Common;
 using MoneyManager.Application.Repositories.Category;
 using MoneyManager.Application.Services.Entities;
+using MoneyManager.Application.Services.Log;
 using MoneyManager.Domain.Entities;
-using MoneyManager.Domain.Entities.Common;
 
 namespace MoneyManager.Persistence.Services.Entities;
 
 public class CategoryService(
     ICategoryWriteRepository writeRepository,
     ICategoryReadRepository readRepository,
-    IConfiguration configuration
+    IConfiguration configuration,
+    ILogService logService
     ) : ICategoryService
 {
     public async Task<CreateCategoryCommandResponse> CreateCategoryAsync(CreateCategoryCommandRequest request, CancellationToken ct)
@@ -29,7 +31,7 @@ public class CategoryService(
             Category category;
             if (request.CategoryId != null)
             {
-                Category? parentCategory = await readRepository.GetByIdAsync(request.CategoryId.Value);
+                Category? parentCategory = await readRepository.GetByIdAsync(request.CategoryId.Value, false);
                 if (parentCategory == null)
                 {
                     throw new UnknownErrorException();
@@ -94,16 +96,24 @@ public class CategoryService(
     {
         try
         {
-            Category? category = await readRepository.GetByIdAsync(removeCategoryCommandRequest.Id);
+            Category? category = await readRepository.GetByIdAsync(removeCategoryCommandRequest.Id, false);
             if (category == null)
                 throw new CategoryNotFoundException();
             writeRepository.Remove(category);
             await writeRepository.SaveAsync();
-            return new();
-        }catch(Exception ex)
+            logService.LogInformation("Category removed", category);
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is Npgsql.PostgresException { SqlState: "23503" })
+        {
+            logService.LogError("Category remove error: " + nameof(CashbackInUseErrorException));
+            throw new CashbackInUseErrorException();
+        }
+        catch(Exception)
         {
             throw new UnknownErrorException();
         }
+
+        return new();
     }
 
     public async Task<List<GetAllCategoryQueryResponse>> GetAllCategoriesAsync(GetAllCategoryQueryRequest request, CancellationToken ct)

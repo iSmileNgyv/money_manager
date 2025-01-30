@@ -1,13 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using MoneyManager.Application.Services.Log;
 using MoneyManager.Domain.Entities;
 using MoneyManager.Domain.Entities.Common;
 using MoneyManager.Domain.Entities.Identity;
+using MoneyManager.Persistence.Interceptors;
 
 namespace MoneyManager.Persistence.Contexts;
 
-public class MainContext(DbContextOptions<MainContext> options) : IdentityDbContext<User, Role, Guid>(options)
+public class MainContext(DbContextOptions<MainContext> options, ILogService logService) : IdentityDbContext<User, Role, Guid>(options)
 {
     public DbSet<Product> Products { get; set; }
     public DbSet<Category> Categories { get; set; }
@@ -128,5 +130,10 @@ public class MainContext(DbContextOptions<MainContext> options) : IdentityDbCont
             .HasForeignKey(t => t.TransactionId)
             .OnDelete(DeleteBehavior.Restrict);
 
+    }
+    
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.AddInterceptors(new EfCoreLogInterceptor(logService));
     }
 }

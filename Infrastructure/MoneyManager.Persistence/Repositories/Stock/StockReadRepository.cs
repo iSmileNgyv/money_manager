@@ -11,7 +11,7 @@ public class StockReadRepository(MainContext context) : ReadRepository<Domain.En
 
     public async Task<List<Domain.Entities.Stock>> FilterAsync(GetFilteredStockQueryRequest request, CancellationToken ct = default)
     {
-        IQueryable<Domain.Entities.Stock> query = _context.Stocks;
+        IQueryable<Domain.Entities.Stock> query = _context.Stocks.AsNoTracking();
         if (!string.IsNullOrEmpty(request.Name))
         {
             query = query.Where(stock => stock.Name.Trim().ToLower().Contains(request.Name.Trim().ToLower()));
