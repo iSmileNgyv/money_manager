@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MoneyManager.Persistence.Migrations
 {
     [DbContext(typeof(MainContext))]
-    [Migration("20250125165131_8")]
-    partial class _8
+    [Migration("20250203132629_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -439,6 +439,80 @@ namespace MoneyManager.Persistence.Migrations
                     b.ToTable("Stocks");
                 });
 
+            modelBuilder.Entity("MoneyManager.Domain.Entities.Transaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("CashbackAmount")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateOnly>("EventDate")
+                        .HasColumnType("date");
+
+                    b.Property<Guid>("PaymentMethodId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("StockId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("PaymentMethodId");
+
+                    b.HasIndex("StockId");
+
+                    b.ToTable("Transactions");
+                });
+
+            modelBuilder.Entity("MoneyManager.Domain.Entities.TransactionProduct", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<float>("Quantity")
+                        .HasColumnType("real");
+
+                    b.Property<Guid>("TransactionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("TransactionId");
+
+                    b.ToTable("TransactionProducts");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("MoneyManager.Domain.Entities.Identity.Role", null)
@@ -563,11 +637,58 @@ namespace MoneyManager.Persistence.Migrations
                     b.Navigation("Media");
                 });
 
+            modelBuilder.Entity("MoneyManager.Domain.Entities.Transaction", b =>
+                {
+                    b.HasOne("MoneyManager.Domain.Entities.Category", "Category")
+                        .WithMany("Transactions")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MoneyManager.Domain.Entities.PaymentMethod", "PaymentMethod")
+                        .WithMany("Transactions")
+                        .HasForeignKey("PaymentMethodId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MoneyManager.Domain.Entities.Stock", "Stock")
+                        .WithMany("Transactions")
+                        .HasForeignKey("StockId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Category");
+
+                    b.Navigation("PaymentMethod");
+
+                    b.Navigation("Stock");
+                });
+
+            modelBuilder.Entity("MoneyManager.Domain.Entities.TransactionProduct", b =>
+                {
+                    b.HasOne("MoneyManager.Domain.Entities.Product", "Product")
+                        .WithMany("TransactionProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MoneyManager.Domain.Entities.Transaction", "Transaction")
+                        .WithMany("TransactionProducts")
+                        .HasForeignKey("TransactionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Transaction");
+                });
+
             modelBuilder.Entity("MoneyManager.Domain.Entities.Category", b =>
                 {
                     b.Navigation("Cashbacks");
 
                     b.Navigation("Products");
+
+                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("MoneyManager.Domain.Entities.Media", b =>
@@ -582,11 +703,25 @@ namespace MoneyManager.Persistence.Migrations
             modelBuilder.Entity("MoneyManager.Domain.Entities.PaymentMethod", b =>
                 {
                     b.Navigation("Cashbacks");
+
+                    b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("MoneyManager.Domain.Entities.Product", b =>
+                {
+                    b.Navigation("TransactionProducts");
                 });
 
             modelBuilder.Entity("MoneyManager.Domain.Entities.Stock", b =>
                 {
                     b.Navigation("Cashbacks");
+
+                    b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("MoneyManager.Domain.Entities.Transaction", b =>
+                {
+                    b.Navigation("TransactionProducts");
                 });
 #pragma warning restore 612, 618
         }

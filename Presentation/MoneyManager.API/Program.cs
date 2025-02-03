@@ -3,6 +3,7 @@ using System.Text.Json;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MoneyManager.Application;
 using MoneyManager.Application.Exceptions;
@@ -11,6 +12,7 @@ using MoneyManager.Application.Validators.Category;
 using MoneyManager.Infrastructure;
 using MoneyManager.Infrastructure.Services.Storage.Local;
 using MoneyManager.Persistence;
+using MoneyManager.Persistence.Contexts;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -88,18 +90,18 @@ app.UseExceptionHandler(errorApp =>
         }
     });
 });
-// using (var scope = app.Services.CreateScope())
-// {
-//     var dbContext = scope.ServiceProvider.GetRequiredService<MainContext>();
-//     try
-//     {
-//         dbContext.Database.Migrate();
-//     }
-//     catch (Exception ex)
-//     {
-//         Console.WriteLine($"Migration sırasında bir hata oluştu: {ex.Message}");
-//     }
-// }
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<MainContext>();
+    try
+    {
+        dbContext.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Migration sırasında bir hata oluştu: {ex.Message}");
+    }
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
