@@ -1,5 +1,4 @@
-﻿version: '3.8'
-services:
+﻿services:
   postgres:
     image: postgres:latest
     container_name: money_manager_postgres
@@ -58,3 +57,4 @@ services:
       - "5601:5601"
 volumes:
   pgdata:
+  elasticsearch-data:
