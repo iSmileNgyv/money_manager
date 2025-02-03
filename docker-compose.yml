@@ -10,6 +10,8 @@
       - "5440:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - money_manager_network
 
   moneymanager.api:
     image: moneymanager.api
@@ -21,6 +23,8 @@
       - "8081:8081"
     depends_on:
       - postgres
+    networks:
+      - money_manager_network
 
   nginx:
     image: nginx
@@ -32,6 +36,8 @@
       - "8443:443" 
     depends_on:
       - moneymanager.api
+    networks:
+      - money_manager_network
   
 #  elasticsearch:
 #    image: docker.elastic.co/elasticsearch/elasticsearch:8.5.0
@@ -70,3 +76,6 @@ volumes:
   pgdata:
   #elasticsearch-data:
   #elasticsearch-snapshots:
+networks:
+  money_manager_network:
+    name: money_manager_network
