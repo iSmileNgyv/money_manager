@@ -16,12 +16,12 @@ using MoneyManager.Persistence.Contexts;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
-// Log.Logger = new LoggerConfiguration()
-//     .ReadFrom.Configuration(builder.Configuration)
-//     .Enrich.WithThreadId()
-//     .Enrich.FromLogContext()
-//     .CreateLogger();
-// builder.Host.UseSerilog();
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.WithThreadId()
+    .Enrich.FromLogContext()
+    .CreateLogger();
+builder.Host.UseSerilog();
 
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
