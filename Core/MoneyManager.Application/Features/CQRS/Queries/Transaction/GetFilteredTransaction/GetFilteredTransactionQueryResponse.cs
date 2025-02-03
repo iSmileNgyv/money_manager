@@ -1,8 +1,9 @@
 using MoneyManager.Application.Features.CQRS.Queries.Common;
+using MoneyManager.Application.Features.CQRS.Queries.Transaction.GetAllTransaction;
 
-namespace MoneyManager.Application.Features.CQRS.Queries.Transaction.GetAllTransaction;
+namespace MoneyManager.Application.Features.CQRS.Queries.Transaction.GetFilteredTransaction;
 
-public class GetAllTransactionQueryResponse
+public class GetFilteredTransactionQueryResponse
 {
     public Guid Id { get; set; }
     public Guid PaymentMethodId { get; set; }

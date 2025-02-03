@@ -97,7 +97,7 @@ public class StockService(
     public async Task<List<GetFilteredStockQueryResponse>> FilterStocksAsync(GetFilteredStockQueryRequest request, CancellationToken ct = default)
     {
         List<Stock> stocks = await readRepository.FilterAsync(request, ct);
-        return stocks.Select(s => new GetFilteredStockQueryResponse()
+        return stocks.Select(s => new GetFilteredStockQueryResponse
         {
             Id = s.Id,
             Name = s.Name,

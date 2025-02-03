@@ -7,6 +7,7 @@ public class Transaction: BaseEntity
     public Guid PaymentMethodId { get; set; }
     public Guid CategoryId { get; set; }
     public Guid? StockId { get; set; }
+    public DateOnly EventDate { get; set; }
     public decimal Amount { get; set; } = 0;
     public decimal CashbackAmount { get; set; } = 0;
     public ICollection<TransactionProduct>? TransactionProducts { get; set; }

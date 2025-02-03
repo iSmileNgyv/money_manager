@@ -38,7 +38,7 @@ public class TransactionProductsController(
         return Ok(await mediator.Send(request));
     }
 
-    [HttpGet("{transactionId}")]
+    [HttpGet("transaction")]
     public async Task<IActionResult> GetByTransactionId(GetByTransactionIdTransactionProductQueryRequest request)
     {
         return Ok(await mediator.Send(request));

@@ -4,6 +4,7 @@ using MoneyManager.Application.Features.CQRS.Commands.Transaction.CreateTransact
 using MoneyManager.Application.Features.CQRS.Commands.Transaction.RemoveTransaction;
 using MoneyManager.Application.Features.CQRS.Commands.Transaction.UpdateTransaction;
 using MoneyManager.Application.Features.CQRS.Queries.Transaction.GetAllTransaction;
+using MoneyManager.Application.Features.CQRS.Queries.Transaction.GetFilteredTransaction;
 
 namespace MoneyManager.API.Controllers;
 [ApiController]
@@ -32,6 +33,12 @@ public class TransactionsController(
 
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] GetAllTransactionQueryRequest request)
+    {
+        return Ok(await mediator.Send(request));
+    }
+
+    [HttpGet("filter")]
+    public async Task<IActionResult> Filter([FromQuery] GetFilteredTransactionQueryRequest request)
     {
         return Ok(await mediator.Send(request));
     }

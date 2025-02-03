@@ -75,5 +75,6 @@ public static class ServiceRegistration
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IInternalAuth, AuthService>();
         services.AddScoped<ITransactionService, TransactionService>();
+        services.AddScoped<ITransactionProductService, TransactionProductService>();
     }
 }
