@@ -26,7 +26,7 @@
       dockerfile: Dockerfile
     ports:
       - "8888:80"
-      - "443:443" 
+      - "8889:443" 
     depends_on:
       - moneymanager.api
   
