@@ -65,7 +65,7 @@
     image: docker.elastic.co/kibana/kibana:8.5.0
     container_name: kibana
     volumes:
-      - Presentation/MoneyManager.API/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+      - ./Presentation/MoneyManager.API/config/kibana.yml:/usr/share/kibana/config/kibana.yml
     depends_on:
       - elasticsearch
     ports:
