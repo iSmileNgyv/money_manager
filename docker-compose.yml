@@ -25,7 +25,7 @@
       context: Presentation/MoneyManager.API/nginx/
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "8888:80"
       - "443:443" 
     depends_on:
       - moneymanager.api
