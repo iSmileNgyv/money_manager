@@ -17,8 +17,8 @@
       context: .
       dockerfile: Presentation/MoneyManager.API/Dockerfile
     ports:
-      - "8080:8880"
-      - "8081:8443"
+      - "8080:8080"
+      - "8081:8081"
     depends_on:
       - postgres
 
