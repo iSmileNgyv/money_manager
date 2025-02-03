@@ -21,11 +21,11 @@ var builder = WebApplication.CreateBuilder(args);
 //     .CreateLogger();
 // builder.Host.UseSerilog();
 
-// builder.WebHost.ConfigureKestrel(serverOptions =>
-// {
-//     serverOptions.ListenAnyIP(8080);
-//     serverOptions.ListenAnyIP(8081);
-// });
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(8080);
+    serverOptions.ListenAnyIP(8081);
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -110,7 +110,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors();
 app.UseRouting();
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseStaticFiles();
