@@ -1,0 +1,4 @@
+server.basePath: "/kibana"
+server.rewriteBasePath: true
+elasticsearch.hosts: ["http://elasticsearch:9200"]
+elasticsearch.serviceAccountToken: "AAEAAWVsYXN0aWMva2liYW5hL215LXRva2VuOjhjcGE2Znk2VEUyOTRGS0sxWlIwZ3c"
