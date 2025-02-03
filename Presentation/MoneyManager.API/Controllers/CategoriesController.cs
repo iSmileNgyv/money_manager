@@ -11,7 +11,7 @@ using MoneyManager.Application.Features.CQRS.Queries.Category.GetFilteredCategor
 namespace MoneyManager.API.Controllers;
 [Route("api/v1/[controller]")]
 [ApiController]
-//[Authorize(AuthenticationSchemes = "Admin")]
+[Authorize(AuthenticationSchemes = "Admin")]
 public class CategoriesController(
     IMediator mediator
     ) : Controller
