@@ -1,13 +1,13 @@
 ﻿services:
-  angular-builder:
-    build:
-      context: frontend/money_manager_frontend/
-      dockerfile: Dockerfile
-    container_name: angular-builder
-    volumes:
-      - angular-dist:/app/dist/money_manager_frontend/browser
-    networks:
-      - money_manager_network
+#  angular-builder:
+#    build:
+#      context: frontend/money_manager_frontend/
+#      dockerfile: Dockerfile
+#    container_name: angular-builder
+#    volumes:
+#      - angular-dist:/app/dist/money_manager_frontend/browser
+#    networks:
+#      - money_manager_network
   
   postgres:
     image: postgres:latest
