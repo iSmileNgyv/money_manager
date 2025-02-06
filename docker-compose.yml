@@ -39,8 +39,8 @@
   nginx:
     image: nginx
     build:
-      context: .
-      dockerfile: Presentation/MoneyManager.API/nginx/Dockerfile
+      context: Presentation/MoneyManager.API/nginx/
+      dockerfile: Dockerfile
     ports:
       - "8880:80"
       - "8443:443" 
