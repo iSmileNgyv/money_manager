@@ -1,8 +1,8 @@
 ﻿services:
   angular-builder:
     build:
-      context: .
-      dockerfile: frontend/money_manager_frontend/Dockerfile
+      context: frontend/money_manager_frontend/
+      dockerfile: Dockerfile
     container_name: angular-builder
     volumes:
       - angular-dist:/app/dist/money_manager_frontend/browser
@@ -46,7 +46,6 @@
       - "8443:443" 
     depends_on:
       - moneymanager.api
-      - angular-builder
     networks:
       - money_manager_network
     volumes:
