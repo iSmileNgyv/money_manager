@@ -1,14 +1,4 @@
-﻿services:
-#  angular-builder:
-#    build:
-#      context: .
-#      dockerfile: frontend/money_manager_frontend/Dockerfile
-#    container_name: angular-builder
-#    volumes:
-#      - angular-dist:/app/dist/money_manager_frontend/browser
-#    networks:
-#      - money_manager_network
-  
+﻿services:  
   postgres:
     image: postgres:latest
     container_name: money_manager_postgres
@@ -90,7 +80,6 @@ volumes:
   pgdata:
   elasticsearch-data:
   elasticsearch-snapshots:
-  #angular-dist:
 networks:
   money_manager_network:
     name: money_manager_network
