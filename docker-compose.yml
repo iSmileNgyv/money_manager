@@ -46,6 +46,7 @@
       - "8443:443" 
     depends_on:
       - moneymanager.api
+      - angular-builder
     networks:
       - money_manager_network
     volumes:
