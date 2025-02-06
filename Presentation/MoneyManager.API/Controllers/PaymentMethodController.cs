@@ -12,7 +12,7 @@ namespace MoneyManager.API.Controllers;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Authorize(AuthenticationSchemes = "Admin")]
-public class PaymentMethodsController(IMediator mediator) : Controller
+public class PaymentMethodController(IMediator mediator) : Controller
 {
     [HttpPost]
     public async Task<IActionResult> Create(CreatePaymentMethodCommandRequest request)

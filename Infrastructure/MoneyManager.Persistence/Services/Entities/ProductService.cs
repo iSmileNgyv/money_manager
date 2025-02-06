@@ -7,6 +7,7 @@ using MoneyManager.Application.Features.CQRS.Commands.Product.RemoveProduct;
 using MoneyManager.Application.Features.CQRS.Commands.Product.UpdateProduct;
 using MoneyManager.Application.Features.CQRS.Queries.Common;
 using MoneyManager.Application.Features.CQRS.Queries.Product.GetAllProduct;
+using MoneyManager.Application.Features.CQRS.Queries.Product.GetAllProductWithoutPagination;
 using MoneyManager.Application.Features.CQRS.Queries.Product.GetFilteredProduct;
 using MoneyManager.Application.Repositories.Product;
 using MoneyManager.Application.Services.Entities;
@@ -89,6 +90,24 @@ public class ProductService(
             .Skip(request.Page * request.Size)
             .Take(request.Size);
         return await product.Select(p => new GetAllProductQueryResponse
+        {
+            Id = p.Id,
+            Name = p.Name,
+            CategoryId = p.CategoryId,
+            Image = new ImageResponse {Path = p.Image, FullPath = configuration["BaseStorageUrl"] + "/" +p.Image },
+            Price = p.Price,
+            Description = p.Description,
+            CategoryName = p.Category.Name,
+            CreatedDate = p.CreatedDate
+        }).ToListAsync(cancellationToken: ct);
+    }
+
+    public async Task<List<GetAllProductWithoutPaginationQueryResponse>> GetAllProductWithoutPaginationAsync(GetAllProductWithoutPaginationQueryRequest request,
+        CancellationToken ct)
+    {
+        IQueryable<Product> product = readRepository.GetAll(false)
+            .Include(p => p.Category);
+        return await product.Select(p => new GetAllProductWithoutPaginationQueryResponse
         {
             Id = p.Id,
             Name = p.Name,

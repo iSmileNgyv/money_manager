@@ -11,7 +11,7 @@ namespace MoneyManager.API.Controllers;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Authorize(AuthenticationSchemes = "Admin")]
-public class CashbacksController(IMediator mediator) : Controller
+public class CashbackController(IMediator mediator) : Controller
 {
     [HttpPost]
     public async Task<IActionResult> Create(CreateCashbackCommandRequest request)

@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MoneyManager.Application.Exceptions;
 using MoneyManager.Application.Exceptions.TransactionProduct;
 using MoneyManager.Application.Features.CQRS.Commands.TransactionProduct.CreateTransactionProduct;
 using MoneyManager.Application.Features.CQRS.Commands.TransactionProduct.RemoveTransactionProduct;
 using MoneyManager.Application.Features.CQRS.Commands.TransactionProduct.UpdateTransactionProduct;
+using MoneyManager.Application.Features.CQRS.Queries.Common;
 using MoneyManager.Application.Features.CQRS.Queries.TransactionProduct.GetAllTransactionProduct;
 using MoneyManager.Application.Features.CQRS.Queries.TransactionProduct.GetByTransactionIdTransactionProduct;
 using MoneyManager.Application.Repositories.TransactionProduct;
@@ -14,7 +16,8 @@ namespace MoneyManager.Persistence.Services.Entities;
 
 public class TransactionProductService(
     ITransactionProductReadRepository readRepository,
-    ITransactionProductWriteRepository writeRepository
+    ITransactionProductWriteRepository writeRepository,
+    IConfiguration configuration
     ): ITransactionProductService
 {
     public async Task<CreateTransactionProductCommandResponse> CreateTransactionProductAsync(CreateTransactionProductCommandRequest request, CancellationToken ct = default)
@@ -84,6 +87,7 @@ public class TransactionProductService(
     {
         IQueryable<TransactionProduct> tp = readRepository.GetAll(false)
             .Include(p => p.Product)
+            .Include(p => p.Product.Media)
             .Skip(request.Page * request.Size)
             .Take(request.Size)
             .OrderByDescending(p => p.CreatedDate);
@@ -92,9 +96,11 @@ public class TransactionProductService(
             Id = p.Id,
             ProductId = p.Product.Id,
             ProductName = p.Product.Name,
+            ProductImage = new ImageResponse {Path = p.Product.Image, FullPath = configuration["BaseStorageUrl"] + "/" +p.Product.Image },
             TransactionId = p.TransactionId,
             Quantity = p.Quantity,
-            Price = p.Price
+            Price = p.Price,
+            CreatedDate = p.CreatedDate
         }).ToListAsync(ct);
     }
 
@@ -110,9 +116,11 @@ public class TransactionProductService(
             Id = t.Id,
             ProductId = t.Product.Id,
             ProductName = t.Product.Name,
+            ProductImage = new ImageResponse {Path = t.Product.Image, FullPath = configuration["BaseStorageUrl"] + "/" +t.Product.Image },
             TransactionId = t.TransactionId,
             Quantity = t.Quantity,
-            Price = t.Price
+            Price = t.Price,
+            CreatedDate = t.CreatedDate
         }).ToListAsync(ct);
     }
 }

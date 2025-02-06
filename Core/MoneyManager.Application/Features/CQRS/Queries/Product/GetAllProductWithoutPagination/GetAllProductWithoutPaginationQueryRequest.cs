@@ -1,0 +1,5 @@
+using MediatR;
+
+namespace MoneyManager.Application.Features.CQRS.Queries.Product.GetAllProductWithoutPagination;
+
+public class GetAllProductWithoutPaginationQueryRequest: IRequest<List<GetAllProductWithoutPaginationQueryResponse>>;

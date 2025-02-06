@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoneyManager.Application.Features.CQRS.Commands.TransactionProduct.CreateTransactionProduct;
 using MoneyManager.Application.Features.CQRS.Commands.TransactionProduct.RemoveTransactionProduct;
@@ -10,7 +11,8 @@ namespace MoneyManager.API.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class TransactionProductsController(
+//[Authorize(AuthenticationSchemes = "Admin")]
+public class TransactionProductController(
     IMediator mediator
 ) : Controller
 {
@@ -33,13 +35,13 @@ public class TransactionProductsController(
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll(GetAllTransactionProductQueryRequest request)
+    public async Task<IActionResult> GetAll([FromQuery] GetAllTransactionProductQueryRequest request)
     {
         return Ok(await mediator.Send(request));
     }
 
     [HttpGet("transaction")]
-    public async Task<IActionResult> GetByTransactionId(GetByTransactionIdTransactionProductQueryRequest request)
+    public async Task<IActionResult> GetByTransactionId([FromQuery] GetByTransactionIdTransactionProductQueryRequest request)
     {
         return Ok(await mediator.Send(request));
     }

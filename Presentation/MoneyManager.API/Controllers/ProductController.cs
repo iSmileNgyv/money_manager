@@ -5,13 +5,14 @@ using MoneyManager.Application.Features.CQRS.Commands.Product.CreateProduct;
 using MoneyManager.Application.Features.CQRS.Commands.Product.RemoveProduct;
 using MoneyManager.Application.Features.CQRS.Commands.Product.UpdateProduct;
 using MoneyManager.Application.Features.CQRS.Queries.Product.GetAllProduct;
+using MoneyManager.Application.Features.CQRS.Queries.Product.GetAllProductWithoutPagination;
 using MoneyManager.Application.Features.CQRS.Queries.Product.GetFilteredProduct;
 
 namespace MoneyManager.API.Controllers;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Authorize(AuthenticationSchemes = "Admin")]
-public class ProductsController(
+public class ProductController(
     IMediator mediator
     ) : Controller
 {
@@ -33,7 +34,13 @@ public class ProductsController(
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] GetAllProductQueryRequest request)
+    public async Task<IActionResult> Get([FromQuery] GetAllProductQueryRequest request)
+    {
+        return Ok(await mediator.Send(request));
+    }
+
+    [HttpGet("all")]
+    public async Task<IActionResult> GetAll([FromQuery] GetAllProductWithoutPaginationQueryRequest request)
     {
         return Ok(await mediator.Send(request));
     }

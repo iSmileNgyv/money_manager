@@ -1,3 +1,5 @@
+using MoneyManager.Application.Features.CQRS.Queries.Common;
+
 namespace MoneyManager.Application.Features.CQRS.Queries.TransactionProduct.GetByTransactionIdTransactionProduct;
 
 public class GetByTransactionIdTransactionProductQueryResponse
@@ -6,6 +8,8 @@ public class GetByTransactionIdTransactionProductQueryResponse
     public Guid TransactionId { get; set; }
     public Guid ProductId { get; set; }
     public required string ProductName { get; set; }
+    public ImageResponse? ProductImage { get; set; }
     public float Quantity { get; set; }
     public decimal Price { get; set; }
+    public DateTime CreatedDate { get; set; }
 }

@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoneyManager.Application.Features.CQRS.Commands.Transaction.CreateTransaction;
 using MoneyManager.Application.Features.CQRS.Commands.Transaction.RemoveTransaction;
@@ -9,7 +10,8 @@ using MoneyManager.Application.Features.CQRS.Queries.Transaction.GetFilteredTran
 namespace MoneyManager.API.Controllers;
 [ApiController]
 [Route("/api/v1/[controller]")]
-public class TransactionsController(
+[Authorize(AuthenticationSchemes = "Admin")]
+public class TransactionController(
     IMediator mediator
     ): Controller
 {

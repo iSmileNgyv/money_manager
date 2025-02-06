@@ -9,7 +9,7 @@ namespace MoneyManager.API.Controllers;
 [Route("api/v1/[controller]")]
 [ApiController]
 [Authorize(AuthenticationSchemes = "Admin")]
-public class MediasController(
+public class MediaController(
     IMediator mediator
     ) : Controller
 {

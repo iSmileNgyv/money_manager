@@ -28,7 +28,5 @@ COPY --from=publish /app/publish .
 
 # Elasticsearch environment değişkenlerini kullanarak başlat
 ENV ELASTICSEARCH_URL=http://elasticsearch:9200
-ENV ELASTICSEARCH_USERNAME=elastic
-ENV ELASTICSEARCH_PASSWORD=ElasticPass123!
 
 ENTRYPOINT ["dotnet", "MoneyManager.API.dll"]

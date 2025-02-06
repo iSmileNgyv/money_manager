@@ -12,7 +12,7 @@ namespace MoneyManager.API.Controllers;
 [Route("api/v1/[controller]")]
 [ApiController]
 [Authorize(AuthenticationSchemes = "Admin")]
-public class CategoriesController(
+public class CategoryController(
     IMediator mediator
     ) : Controller
 {
