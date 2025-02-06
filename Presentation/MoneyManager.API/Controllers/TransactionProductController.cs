@@ -11,7 +11,7 @@ namespace MoneyManager.API.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-//[Authorize(AuthenticationSchemes = "Admin")]
+[Authorize(AuthenticationSchemes = "Admin")]
 public class TransactionProductController(
     IMediator mediator
 ) : Controller
