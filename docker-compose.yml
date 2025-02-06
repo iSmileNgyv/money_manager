@@ -2,7 +2,7 @@
   angular-builder:
     build:
       context: .
-      dockerfile: ../../frontend/money_manager_frontend/Dockerfile
+      dockerfile: frontend/money_manager_frontend/Dockerfile
     container_name: angular-builder
     volumes:
       - angular-dist:/app/dist/money_manager_frontend/browser
