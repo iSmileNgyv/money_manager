@@ -1,5 +1,3 @@
 MoneyManager.API/bin/
 MoneyManager.API/obj/
-MoneyManager.API/wwwroot/node_modules/
-MoneyManager.Frontend/bin/
-MoneyManager.Frontend/obj/
+MoneyManager.API/wwwroot/images
