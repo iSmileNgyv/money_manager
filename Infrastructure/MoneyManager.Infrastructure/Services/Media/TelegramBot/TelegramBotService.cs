@@ -21,6 +21,7 @@ public class TelegramBotService(
             text = message
         };
         string jsonPayload = JsonSerializer.Serialize(payload);
+        logService.LogInformation($"chatId: {chatId}, message: {message}");
         var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
         try
         {
