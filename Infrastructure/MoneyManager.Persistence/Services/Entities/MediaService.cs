@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using MoneyManager.Application.Config;
 using MoneyManager.Application.Exceptions.Media;
 using MoneyManager.Application.Features.CQRS.Commands.Media.CreateMedia;
 using MoneyManager.Application.Features.CQRS.Commands.Media.RemoveMedia;
@@ -14,8 +14,7 @@ namespace MoneyManager.Persistence.Services.Entities;
 public class MediaService(
     IStorageService storageService,
     IMediaWriteRepository writeRepository,
-    IMediaReadRepository readRepository,
-    IConfiguration configuration
+    IMediaReadRepository readRepository
     ) : IMediaService
 {
     public async Task<List<CreateMediaCommandResponse>> CreateMediaAsync(CreateMediaCommandRequest request, CancellationToken ct = default)
@@ -44,7 +43,7 @@ public class MediaService(
         {
             Id = m.Id,
             Path = m.Path,
-            FullPath = configuration["BaseStorageUrl"] + "/" + m.Path,
+            FullPath = BaseStorageConfig.FullPath(m.Path),
             FileName = m.FileName
         }).ToListAsync(cancellationToken: cancellationToken);
     }

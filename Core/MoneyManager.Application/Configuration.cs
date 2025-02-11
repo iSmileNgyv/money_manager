@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace MoneyManager.Persistence;
+namespace MoneyManager.Application;
 
 public static class Configuration
 {
@@ -21,4 +21,5 @@ public static class Configuration
             return configuration.GetConnectionString("PostgreSQL");
         }
     }
+    
 }

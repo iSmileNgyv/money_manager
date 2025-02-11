@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MoneyManager.Domain.Entities.Common;
+using MoneyManager.Domain.Entities.Identity;
 
 namespace MoneyManager.Domain.Entities;
 

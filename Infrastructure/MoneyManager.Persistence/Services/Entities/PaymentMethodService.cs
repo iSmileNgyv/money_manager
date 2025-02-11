@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using MoneyManager.Application.Config;
 using MoneyManager.Application.Exceptions;
 using MoneyManager.Application.Exceptions.PaymentMethod;
 using MoneyManager.Application.Features.CQRS.Commands.PaymentMethod.CreatePaymentMethod;
@@ -17,8 +17,7 @@ namespace MoneyManager.Persistence.Services.Entities;
 
 public class PaymentMethodService(
     IPaymentMethodWriteRepository writeRepository,
-    IPaymentMethodReadRepository readRepository,
-    IConfiguration configuration
+    IPaymentMethodReadRepository readRepository
     ): IPaymentMethodService
 {
     public async Task<CreatePaymentMethodCommandResponse> CreatePaymentMethodAsync(CreatePaymentMethodCommandRequest request, CancellationToken ct = default)
@@ -88,7 +87,7 @@ public class PaymentMethodService(
         {
             Id = p.Id,
             Name = p.Name,
-            Image = new ImageResponse {Path = p.Image, FullPath = configuration["BaseStorageUrl"] + "/" +p.Image },
+            Image = new ImageResponse {Path = p.Image, FullPath = BaseStorageConfig.FullPath(p.Image) },
             CreatedDate = p.CreatedDate
         }).ToListAsync(ct);
     }

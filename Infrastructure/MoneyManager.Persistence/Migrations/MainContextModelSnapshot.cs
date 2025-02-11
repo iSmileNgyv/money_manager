@@ -195,11 +195,16 @@ namespace MoneyManager.Persistence.Migrations
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("Image");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Categories");
                 });
@@ -599,9 +604,16 @@ namespace MoneyManager.Persistence.Migrations
                         .HasPrincipalKey("Path")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("MoneyManager.Domain.Entities.Identity.User", "User")
+                        .WithMany("Categories")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("Media");
 
                     b.Navigation("ParentCategory");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MoneyManager.Domain.Entities.PaymentMethod", b =>
@@ -686,6 +698,11 @@ namespace MoneyManager.Persistence.Migrations
                     b.Navigation("Products");
 
                     b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("MoneyManager.Domain.Entities.Identity.User", b =>
+                {
+                    b.Navigation("Categories");
                 });
 
             modelBuilder.Entity("MoneyManager.Domain.Entities.Media", b =>

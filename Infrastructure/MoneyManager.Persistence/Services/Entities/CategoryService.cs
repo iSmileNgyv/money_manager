@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using MoneyManager.Application.Config;
 using MoneyManager.Application.Exceptions;
 using MoneyManager.Application.Exceptions.Cashback;
 using MoneyManager.Application.Exceptions.Category;
@@ -20,7 +20,6 @@ namespace MoneyManager.Persistence.Services.Entities;
 public class CategoryService(
     ICategoryWriteRepository writeRepository,
     ICategoryReadRepository readRepository,
-    IConfiguration configuration,
     ILogService logService
     ) : ICategoryService
 {
@@ -126,7 +125,7 @@ public class CategoryService(
         {
             Id = c.Id,
             Name = c.Name,
-            Image = new ImageResponse {Path = c.Image, FullPath = configuration["BaseStorageUrl"] + "/" +c.Image },
+            Image = new ImageResponse {Path = c.Image, FullPath = BaseStorageConfig.FullPath(c.Image) },
             Description = c.Description,
             CategoryId = c.CategoryId,
             ParentCategoryName = c.ParentCategory != null ? c.ParentCategory.Name : null,
@@ -145,7 +144,7 @@ public class CategoryService(
             Name = c.Name,
             Description = c.Description,
             CategoryId = c.CategoryId,
-            Image = new ImageResponse {Path = c.Image, FullPath = configuration["BaseStorageUrl"] + "/" +c.Image },
+            Image = new ImageResponse {Path = c.Image, FullPath = BaseStorageConfig.FullPath(c.Image)},
             Level = c.Level,
             CategoryType = c.CategoryType,
             CreatedDate = c.CreatedDate

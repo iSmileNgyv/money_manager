@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using MoneyManager.Application.Config;
 using MoneyManager.Application.Exceptions;
 using MoneyManager.Application.Exceptions.TransactionProduct;
 using MoneyManager.Application.Features.CQRS.Commands.TransactionProduct.CreateTransactionProduct;
@@ -16,8 +16,7 @@ namespace MoneyManager.Persistence.Services.Entities;
 
 public class TransactionProductService(
     ITransactionProductReadRepository readRepository,
-    ITransactionProductWriteRepository writeRepository,
-    IConfiguration configuration
+    ITransactionProductWriteRepository writeRepository
     ): ITransactionProductService
 {
     public async Task<CreateTransactionProductCommandResponse> CreateTransactionProductAsync(CreateTransactionProductCommandRequest request, CancellationToken ct = default)
@@ -96,7 +95,7 @@ public class TransactionProductService(
             Id = p.Id,
             ProductId = p.Product.Id,
             ProductName = p.Product.Name,
-            ProductImage = new ImageResponse {Path = p.Product.Image, FullPath = configuration["BaseStorageUrl"] + "/" +p.Product.Image },
+            ProductImage = new ImageResponse {Path = p.Product.Image, FullPath = BaseStorageConfig.FullPath(p.Product.Image) },
             TransactionId = p.TransactionId,
             Quantity = p.Quantity,
             Price = p.Price,
@@ -116,7 +115,7 @@ public class TransactionProductService(
             Id = t.Id,
             ProductId = t.Product.Id,
             ProductName = t.Product.Name,
-            ProductImage = new ImageResponse {Path = t.Product.Image, FullPath = configuration["BaseStorageUrl"] + "/" +t.Product.Image },
+            ProductImage = new ImageResponse {Path = t.Product.Image, FullPath = BaseStorageConfig.FullPath(t.Product.Image) },
             TransactionId = t.TransactionId,
             Quantity = t.Quantity,
             Price = t.Price,

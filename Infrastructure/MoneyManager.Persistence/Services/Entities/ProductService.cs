@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using MoneyManager.Application.Config;
 using MoneyManager.Application.Exceptions;
 using MoneyManager.Application.Exceptions.Product;
 using MoneyManager.Application.Features.CQRS.Commands.Product.CreateProduct;
@@ -17,8 +17,7 @@ namespace MoneyManager.Persistence.Services.Entities;
 
 public class ProductService(
     IProductWriteRepository writeRepository,
-    IProductReadRepository readRepository,
-    IConfiguration configuration
+    IProductReadRepository readRepository
     ) : IProductService
 {
     public async Task<CreateProductCommandResponse> CreateProductAsync(CreateProductCommandRequest request, CancellationToken ct = default)
@@ -76,7 +75,7 @@ public class ProductService(
             Id = p.Id,
             Name = p.Name,
             CategoryId = p.CategoryId,
-            Image = new ImageResponse {Path = p.Image, FullPath = configuration["BaseStorageUrl"] + "/" +p.Image },
+            Image = new ImageResponse {Path = p.Image, FullPath = BaseStorageConfig.FullPath(p.Image) },
             Price = p.Price,
             Description = p.Description,
             CreatedDate = p.CreatedDate
@@ -94,7 +93,7 @@ public class ProductService(
             Id = p.Id,
             Name = p.Name,
             CategoryId = p.CategoryId,
-            Image = new ImageResponse {Path = p.Image, FullPath = configuration["BaseStorageUrl"] + "/" +p.Image },
+            Image = new ImageResponse {Path = p.Image, FullPath = BaseStorageConfig.FullPath(p.Image) },
             Price = p.Price,
             Description = p.Description,
             CategoryName = p.Category.Name,
@@ -112,7 +111,7 @@ public class ProductService(
             Id = p.Id,
             Name = p.Name,
             CategoryId = p.CategoryId,
-            Image = new ImageResponse {Path = p.Image, FullPath = configuration["BaseStorageUrl"] + "/" +p.Image },
+            Image = new ImageResponse {Path = p.Image, FullPath = BaseStorageConfig.FullPath(p.Image) },
             Price = p.Price,
             Description = p.Description,
             CategoryName = p.Category.Name,

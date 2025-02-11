@@ -1,6 +1,3 @@
 namespace MoneyManager.Application.Services.Storage.Local;
 
-public interface ILocalStorage : IStorage
-{
-    
-}
+public interface ILocalStorage : IStorage;

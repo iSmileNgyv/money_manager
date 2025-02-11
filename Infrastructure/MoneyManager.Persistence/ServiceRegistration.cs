@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using MoneyManager.Application;
 using MoneyManager.Application.Repositories.Cashback;
 using MoneyManager.Application.Repositories.Category;
 using MoneyManager.Application.Repositories.Media;

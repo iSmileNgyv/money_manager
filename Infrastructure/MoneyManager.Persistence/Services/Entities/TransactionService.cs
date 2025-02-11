@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using MoneyManager.Application.Config;
 using MoneyManager.Application.Exceptions;
 using MoneyManager.Application.Exceptions.Transaction;
 using MoneyManager.Application.Features.CQRS.Commands.Transaction.CreateTransaction;
@@ -18,7 +18,6 @@ namespace MoneyManager.Persistence.Services.Entities;
 public class TransactionService(
     ITransactionWriteRepository writeRepository,
     ITransactionReadRepository readRepository,
-    IConfiguration configuration,
     ILogService logService
     ): ITransactionService
 {
@@ -106,13 +105,13 @@ public class TransactionService(
             Id = t.Id,
             PaymentMethodId = t.PaymentMethodId,
             PaymentMethodName = t.PaymentMethod.Name,
-            PaymentMethodImage = new ImageResponse {Path = t.PaymentMethod.Image, FullPath = configuration["BaseStorageUrl"] + "/" + t.PaymentMethod.Image },
+            PaymentMethodImage = new ImageResponse {Path = t.PaymentMethod.Image, FullPath = BaseStorageConfig.FullPath(t.PaymentMethod.Image) },
             CategoryId = t.CategoryId,
             CategoryName = t.Category.Name,
-            CategoryImage = new ImageResponse {Path = t.Category.Image, FullPath = configuration["BaseStorageUrl"] + "/" +t.Category.Image },
+            CategoryImage = new ImageResponse {Path = t.Category.Image, FullPath = BaseStorageConfig.FullPath(t.Category.Image) },
             StockId = t.StockId,
             StockName = t.Stock!.Name,
-            StockImage = new ImageResponse {Path = t.Stock.Image, FullPath = configuration["BaseStorageUrl"] + "/" +t.Stock.Image },
+            StockImage = new ImageResponse {Path = t.Stock.Image, FullPath = BaseStorageConfig.FullPath(t.Stock.Image) },
             Amount = t.Amount,
             EventDate = t.EventDate,
             CashbackAmount = t.CashbackAmount,
@@ -130,13 +129,13 @@ public class TransactionService(
             Id = t.Id,
             PaymentMethodId = t.PaymentMethodId,
             PaymentMethodName = t.PaymentMethod.Name,
-            PaymentMethodImage = new ImageResponse {Path = t.PaymentMethod.Image, FullPath = configuration["BaseStorageUrl"] + "/" + t.PaymentMethod.Image },
+            PaymentMethodImage = new ImageResponse {Path = t.PaymentMethod.Image, FullPath = BaseStorageConfig.FullPath(t.PaymentMethod.Image) },
             CategoryId = t.CategoryId,
             CategoryName = t.Category.Name,
-            CategoryImage = new ImageResponse {Path = t.Category.Image, FullPath = configuration["BaseStorageUrl"] + "/" +t.Category.Image },
+            CategoryImage = new ImageResponse {Path = t.Category.Image, FullPath = BaseStorageConfig.FullPath(t.Category.Image) },
             StockId = t.StockId,
             StockName = t.Stock?.Name,
-            StockImage = new ImageResponse {Path = t.Stock?.Image, FullPath = configuration["BaseStorageUrl"] + "/" +t.Stock?.Image },
+            StockImage = new ImageResponse {Path = t.Stock?.Image, FullPath = BaseStorageConfig.FullPath(t.Stock?.Image) },
             Amount = t.Amount,
             EventDate = t.EventDate,
             CashbackAmount = t.CashbackAmount,

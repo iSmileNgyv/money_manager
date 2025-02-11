@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using MoneyManager.Application.Config;
 using MoneyManager.Application.Exceptions;
 using MoneyManager.Application.Exceptions.Stock;
 using MoneyManager.Application.Features.CQRS.Commands.Stock.CreateStock;
@@ -17,8 +17,7 @@ namespace MoneyManager.Persistence.Services.Entities;
 
 public class StockService(
     IStockWriteRepository writeRepository,
-    IStockReadRepository readRepository,
-    IConfiguration configuration
+    IStockReadRepository readRepository
     ): IStockService
 {
     public async Task<CreateStockCommandResponse> CreateStockAsync(CreateStockCommandRequest request, CancellationToken ct = default)
@@ -89,7 +88,7 @@ public class StockService(
         {
             Id = s.Id,
             Name = s.Name,
-            Image = new ImageResponse {Path = s.Image, FullPath = configuration["BaseStorageUrl"] + "/" +s.Image },
+            Image = new ImageResponse {Path = s.Image, FullPath = BaseStorageConfig.FullPath(s.Image) },
             CreatedDate = s.CreatedDate
         }).ToListAsync(ct);
     }
@@ -101,7 +100,7 @@ public class StockService(
         {
             Id = s.Id,
             Name = s.Name,
-            Image = new ImageResponse {Path = s.Image, FullPath = configuration["BaseStorageUrl"] + "/" +s.Image },
+            Image = new ImageResponse {Path = s.Image, FullPath = BaseStorageConfig.FullPath(s.Image) },
             CreatedDate = s.CreatedDate
         }).ToList();
     }
